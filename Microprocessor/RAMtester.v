@@ -24,32 +24,24 @@
 
 module Tester;
 
+	`include "parameters.v"
 	// Inputs
-	reg [9:0] address;
+	reg [adlines-1:0] address;
 	reg read;
 	reg write;
-	reg clk;
+	reg [datalines-1:0] datain;
 
-	// Bidirs
-	wire [7:0] data;
+	// Outputs
+	wire [datalines-1:0] dataout;
 
 	// Instantiate the Unit Under Test (UUT)
 	RAMblock uut (
 		.address(address), 
-		.data(data), 
+		.datain(datain), 
+		.dataout(dataout), 
 		.read(read), 
-		.write(write),
-		.clk(clk)
+		.write(write)
 	);
-
-	assign data = write ? temp : 8'bz;
-
-	reg [7:0] temp;
-	
-	always begin
-		clk = ~clk;
-		#10;
-	end
 
 	initial begin
 		$dumpfile("ram.vcd");
@@ -58,37 +50,65 @@ module Tester;
 		address = 0;
 		read = 0;
 		write = 0;
-		clk = 0;
+		datain = 0;
 
 		// Wait 100 ns for global reset to finish
 		#100;
         
 		// Add stimulus here
 		
-		
-		address = 1;
-		temp = 5;
-		#10
+		datain = 10;
+		address = 11;
 		write = 1;
-		
-		#100
+		#100;
 		write = 0;
-		temp = 0;
-		#100
-		address = 2;
-		temp = 10;
 		#10
+		address = 0;
+		datain = 0;
+		#10
+		datain = 17;
+		address = 19;
 		write = 1;
+		#100;
+		write = 0;
+		address = 0;
+		datain = 0;
+		#10
+		datain = 1003;
+		address = 65;
+		write = 1;
+		#100;
+		write = 0;
+		address = 0;
+		datain = 0;
+		#10
+		
+		read = 1;
+		#10
+
+		address = 0;
 		#100
-		write =0;
-		#100
+		
 		address = 1;
 		#100
-		read = 1;
-		#100
-		read = 0;
 		
-		#1000
+		address = 2;
+		#100
+		
+		address = 11;
+		#100
+		
+		address = 17;
+		#100
+
+		address = 65;
+		#100
+
+		address = 19;
+		#100
+		
+		
+
 		$finish;
 		
 

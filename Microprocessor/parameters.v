@@ -31,7 +31,7 @@
 `define EXECUTE 2
 
 
-parameter adlines = 5;
+parameter adlines = 8;
 parameter datalines = 16;
 parameter ramsize = 1 << adlines;
 parameter aluwidth = 16;

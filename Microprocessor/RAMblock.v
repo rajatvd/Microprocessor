@@ -18,26 +18,36 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module RAMblock(address,data,read,write,clk);
+module RAMblock(address,datain,dataout,read,write);
 	
 	`include "parameters.v"
 
 	input [adlines-1:0] address;
-	inout [datalines-1:0] data;
+	input [datalines-1:0] datain;
+	output [datalines-1:0] dataout;
 	input read;
 	input write;
-	input clk;
 	
 	reg [datalines-1:0] memory [ramsize-1:0];
 	reg [datalines-1:0] temp;
-	
-	assign data = read ? temp : 32'bz;
-	
-	always @ (posedge clk)
-	begin
-		if(write) begin
-			memory[address] = data;
-		end	
-		temp = memory[address];
+
+	initial begin
+		temp = 0;
 	end
+	
+	assign dataout = read ? temp : 0;
+	
+	always @*
+	begin
+		if(write == 1)
+		begin
+			memory[address] = datain;
+		end
+		
+		if(read == 1)
+		begin
+			temp = memory[address];
+		end
+	end
+
 endmodule
