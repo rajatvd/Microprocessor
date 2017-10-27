@@ -27,20 +27,19 @@ module CUTester;
 	`include "parameters.v"
 
 	// Inputs
-	wire [15:0] aluout;
 	reg clk;
 	reg enable;
 
 	// Outputs
-	wire [2:0] aluopcode;
-	wire [15:0] aluin1;
-	wire [15:0] aluin2, r0,r1,r2,instruction;
-	wire [4:0] addressbus;
+	wire [opsize-1:0] aluopcode;
+	wire [aluwidth-1:0] aluin1, aluin2, aluout;
+	wire [aluwidth-1:0] in1, in2, out;
+	wire [adlines-1:0] addressbus;
 	wire read;
 	wire write;
 
 	// Bidirs
-	wire [15:0] databus;
+	wire [datalines-1:0] fromram, toram;
 
 	// Instantiate the Unit Under Test (UUT)
 	CUmodule uut (
@@ -48,35 +47,21 @@ module CUTester;
 		.aluin1(aluin1), 
 		.aluin2(aluin2), 
 		.aluout(aluout), 
-		.databus(databus), 
+		.fromram(fromram), 
+		.toram(toram), 
 		.addressbus(addressbus), 
 		.read(read), 
 		.write(write), 
 		.clk(clk),
-		.enable(enable),
-		.r0(r0),
-		.r1(r1),
-		.r2(r2),
-		.insreg(instruction)
+		.enable(enable)
 	);
 	
-	reg [15:0] data;
-	reg [4:0] addr;
-	reg red,writ;
-	wire [15:0] data2;
-	wire [4:0] addr2;
-	wire red2,writ2;
-	assign addr2 = enable?addressbus:addr;
-	assign data2 = enable?databus:data;
-	assign red2 = enable?read:red;
-	assign writ2 = enable?write:writ;
-	
 	RAMblock ram(
-		.address(addr2), 
-		.data(data2), 
-		.read(red2), 
-		.write(writ2),
-		.clk(clk)
+		.address(addressbus), 
+		.datain(toram),
+		.dataout(fromram),
+		.read(read), 
+		.write(write)
 	);
 	
 	ALUmodule alu(
@@ -101,7 +86,7 @@ module CUTester;
 		// Wait 100 ns for global reset to finish
 		#100;
       
-		addr = 16;
+	/*	addr = 16;
 		data = 5;
 		writ = 1;
 		red = 0;
@@ -140,7 +125,7 @@ module CUTester;
 		#100
 		writ=0;
 		red=0;
-		
+	*/	
 		enable = 1;
 		
 		#1000

@@ -25,6 +25,8 @@
 `define RS 5
 `define LOAD 6
 `define STORE 7
+`define MOV 8
+
 
 `define FETCH 0
 `define DECODE 1
@@ -35,5 +37,7 @@ parameter adlines = 8;
 parameter datalines = 16;
 parameter ramsize = 1 << adlines;
 parameter aluwidth = 16;
-parameter opsize = 3;
+parameter opsize = 4;
 parameter statesize = 4;
+parameter intRegAddr = 4;
+parameter numRegs = 1 << intRegAddr;

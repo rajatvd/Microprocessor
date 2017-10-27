@@ -18,8 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module CUmodule(aluopcode, aluin1, aluin2, aluout, databus, addressbus, read, write, clk, enable,
-r0,r1,r2,insreg);
+module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, read, write, clk, enable);
 	
 	`include "parameters.v"
 	
@@ -31,31 +30,28 @@ r0,r1,r2,insreg);
 	input enable;
 	output reg read=0,write=0;
 	
-	output [datalines-1:0] r0,r1,r2,insreg;
+	input [datalines-1:0] fromram;
+	output [datalines-1:0] toram;
 	
 	
-	inout [datalines-1:0] databus;
-	reg [datalines-1:0] temp=0;
 	input clk;
+	reg [datalines-1:0] pc=0, instreg=0, ramwrite_reg=0;
+	reg [datalines-1:0] r [numRegs-1:0];
+	
+	assign toram = ramwrite_reg;
 
-	reg [datalines-1:0] pc=0,instreg=0;
-	
-	reg [datalines-1:0] r [5:0];
-	
+	integer i;
+
 	initial
 	begin
-	r[0] = 0;
-	r[1] = 0;
-	r[2] = 0;
+		for(i=0;i<numRegs;i=i+1) begin
+			r[i]=0;
+		end
 	end
 	
 	reg [statesize-1:0] STATE = `FETCH;
 	
-	assign databus = write ? temp : 32'bz;
-	assign r0 = r[0];
-	assign r1 = r[1];
-	assign r2 = r[2];
-	assign insreg = instreg;
+
 
 	always @(posedge clk)
 	begin
@@ -68,11 +64,11 @@ r0,r1,r2,insreg);
 				addressbus = pc;
 				read = 1;
 				write = 0;
-				instreg = databus;
-				STATE <= `DECODE;
+				STATE = `DECODE;
 			end
 			`DECODE:
 			begin
+				instreg = fromram;
 				read = 0;
 				write = 0;
 				case(instreg[opsize-1:0])
@@ -81,24 +77,53 @@ r0,r1,r2,insreg);
 						addressbus = instreg[opsize+adlines-1:opsize];
 						read = 1;
 						write = 0;
-						r[instreg[opsize+adlines+2:opsize+adlines]] = databus;
 					end
 					`STORE: 
 					begin
 						addressbus = instreg[opsize+adlines-1:opsize];
+						ramwrite_reg = r[instreg[opsize+adlines+intRegAddr-1:opsize+adlines]];
 						read = 0;
 						write = 1;
-						temp = r[instreg[opsize+adlines+2:opsize+adlines]];
+					end
+					`MOV:
+					begin
+						r[instreg[opsize+intRegAddr-1:opsize]] = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];	
 					end
 					default:
 					begin
 						aluin1 = r[0];
 						aluin2 = r[1];
+						aluopcode = instreg[opsize-1:0];
+					end
+				endcase
+			STATE = `EXECUTE;
+			end
+			`EXECUTE:
+			begin
+					
+				case(instreg[opsize-1:0])
+					`LOAD:
+					begin
+						r[instreg[opsize+adlines+intRegAddr-1:opsize+adlines]] = fromram;
+					end
+					`STORE: 
+					begin
+						/*addressbus = instreg[opsize+adlines-1:opsize];
+						ramwrite_reg = r[instreg[opsize+adlines+2:opsize+adlines]];
+						read = 0;
+						write = 1;*/
+					end
+					default:
+					begin
+						/*aluin1 = r[0];
+						aluin2 = r[1];
 						r[2] = aluout;
-						aluopcode = instreg[2:0];
+						aluopcode = instreg[opsize-1:0];*/
+						r[2] = aluout;
 					end
 				endcase
 				STATE = `FETCH;
+
 			end
 		endcase
 		end

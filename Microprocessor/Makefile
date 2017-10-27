@@ -10,15 +10,18 @@ ram.out: RAMtester.v RAMblock.v
 all: alu.out ram.out cu.out
 
 
-alu: alu.out
+alu: ALUtester.v ALUmodule.v
+	iverilog $? -o $@.out
 	vvp $@.out
 	gtkwave $@.vcd
 
-cu: cu.out
+cu: CUtester.v ALUmodule.v CUmodule.v RAMblock.v
+	iverilog $? -o $@.out
 	vvp $@.out
 	gtkwave $@.vcd
 
-ram: ram.out
+ram: RAMtester.v RAMblock.v
+	iverilog $? -o $@.out
 	vvp $@.out
 	gtkwave $@.vcd
 
