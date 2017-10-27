@@ -92,6 +92,8 @@ module CUTester;
 	end
 
 	initial begin
+		$dumpfile("cu.vcd");
+		$dumpvars;
 		// Initialize Inputs
 		clk = 0;
 		enable = 0;
@@ -141,9 +143,6 @@ module CUTester;
 		
 		enable = 1;
 		
-		// Add stimulus here
-		$dumpfile("CUTester.vcd");
-		$dumpvars;
 		#1000
 		$finish;
 

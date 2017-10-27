@@ -52,6 +52,8 @@ module Tester;
 	end
 
 	initial begin
+		$dumpfile("ram.vcd");
+		$dumpvars;
 		// Initialize Inputs
 		address = 0;
 		read = 0;
@@ -86,6 +88,8 @@ module Tester;
 		#100
 		read = 0;
 		
+		#1000
+		$finish;
 		
 
 	end
