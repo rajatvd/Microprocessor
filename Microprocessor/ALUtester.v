@@ -4,7 +4,7 @@
 // Company: 
 // Engineer:
 //
-// Create Date:   16:11:19 10/10/2017
+// Create Date:   16:11:19 10/10/201aluwidth-1
 // Design Name:   ALUmodule
 // Module Name:   C:/Users/students/Desktop/8bitProcessor/microprocessor/ALUtester.v
 // Project Name:  microprocessor
@@ -25,12 +25,12 @@
 module ALUtester;
 	`include "parameters.v"
 	// Inputs
-	reg [2:0] opcode;
-	reg [7:0] in1;
-	reg [7:0] in2;
+	reg [opsize-1:0] opcode;
+	reg [aluwidth-1:0] in1;
+	reg [aluwidth-1:0] in2;
 
 	// Outputs
-	wire [7:0] out;
+	wire [aluwidth-1:0] out;
 
 	// Instantiate the Unit Under Test (UUT)
 	ALUmodule uut (
