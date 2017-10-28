@@ -21,6 +21,7 @@
 module RAMblock(address,datain,dataout,read,write);
 	
 	`include "parameters.v"
+	`include "testCode.v"
 
 	input [adlines-1:0] address;
 	input [datalines-1:0] datain;
@@ -31,16 +32,23 @@ module RAMblock(address,datain,dataout,read,write);
 	reg [datalines-1:0] memory [ramsize-1:0];
 	reg [datalines-1:0] temp;
 
+	integer i;
+
 	initial begin
 		temp = 0;
 		
-		memory[1] = 16'b100000110;
+		/*memory[1] = 16'b100000110;
 		memory[2] = 16'b11000100010110;
 		memory[3] = 16'b001100011000;
 		memory[4] = 0;
 		memory[5] = 16'b10101010100111;
 		memory[16] = 15;
-		memory[17] = 4;
+		memory[17] = 4;*/
+
+		/*for(i=0;i<7;i=i+1) begin
+			memory[ADDRESSES[i]] = DATA[i];
+		end*/
+		`writeRam
 
 	end
 	

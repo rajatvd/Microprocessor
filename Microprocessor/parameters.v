@@ -41,3 +41,4 @@ parameter opsize = 4;
 parameter statesize = 4;
 parameter intRegAddr = 4;
 parameter numRegs = 1 << intRegAddr;
+
