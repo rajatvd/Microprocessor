@@ -1,0 +1,20 @@
+program:
+LDI R0,$data
+LDI R1, #1
+LD r5,r0
+add r0,r0,r1
+LD r6,r0
+add r3,r5,r6
+sub r4,r5,r6
+and r7,r5,r6
+
+add r0,r0,r1
+st r3,r0
+add r0,r0,r1
+st r4,r0
+add r0,r0,r1
+st r7,r0
+
+data:
+5
+12

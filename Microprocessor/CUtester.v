@@ -42,7 +42,7 @@ module CUTester;
 	wire [datalines-1:0] fromram, toram;
 
 	// Instantiate the Unit Under Test (UUT)
-	CUmodule uut (
+	CUmodule cu (
 		.aluopcode(aluopcode), 
 		.aluin1(aluin1), 
 		.aluin2(aluin2), 

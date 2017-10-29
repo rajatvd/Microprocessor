@@ -91,8 +91,8 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 					end
 					`ST: 
 					begin
-						addressbus = r[instreg[opsize+intRegAddr-1:opsize]][adlines-1:0];
-						ramwrite_reg = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];
+						addressbus = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]][adlines-1:0];
+						ramwrite_reg = r[instreg[opsize+intRegAddr-1:opsize]];
 						read = 0;
 						write = 1;
 					end
