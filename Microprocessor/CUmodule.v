@@ -78,20 +78,20 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 					end
 					`STI: 
 					begin
-						addressbus = r[instreg[opsize+intRegAddr-1:opsize]];
+						addressbus = r[instreg[opsize+intRegAddr-1:opsize]][adlines-1:0];
 						ramwrite_reg = instreg[datalines-1:opsize+intRegAddr];
 						read = 0;
 						write = 1;
 					end
 					`LD:
 					begin
-						addressbus = r[instreg[opsize+intRegAddr-1:opsize]];
+						addressbus = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]][adlines-1:0];
 						read = 1;
 						write = 0;
 					end
 					`ST: 
 					begin
-						addressbus = r[instreg[opsize+intRegAddr-1:opsize]];
+						addressbus = r[instreg[opsize+intRegAddr-1:opsize]][adlines-1:0];
 						ramwrite_reg = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];
 						read = 0;
 						write = 1;
@@ -103,8 +103,8 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 					default:
 					begin
 						aluopcode = instreg[opsize-1:0];
-						aluin1 = r[instreg[opsize+intRegAddr-1:opsize]];
-						aluin2 = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];
+						aluin1 = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];
+						aluin2 = r[instreg[opsize+intRegAddr+intRegAddr+intRegAddr-1:opsize+intRegAddr+intRegAddr]];
 					end
 				endcase
 			STATE = `EXECUTE;
@@ -118,7 +118,7 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 					end
 					`LD:
 					begin
-						r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]] = fromram;
+						r[instreg[opsize+intRegAddr-1:opsize]] = fromram;
 					end
 					
 					`STI: begin
@@ -137,7 +137,7 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 						aluin2 = r[1];
 						r[2] = aluout;
 						aluopcode = instreg[opsize-1:0];*/
-						r[instreg[opsize+intRegAddr+intRegAddr+intRegAddr-1:opsize+intRegAddr+intRegAddr]] = aluout;
+						r[instreg[opsize+intRegAddr-1:opsize]] = aluout;
 					end
 				endcase
 				STATE = `FETCH;

@@ -21,7 +21,7 @@
 module RAMblock(address,datain,dataout,read,write);
 	
 	`include "parameters.v"
-	`include "testCode.v"
+	`include "../code.v"
 
 	input [adlines-1:0] address;
 	input [datalines-1:0] datain;

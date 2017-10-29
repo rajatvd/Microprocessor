@@ -1,1 +1,9 @@
-['PROGRAM:', 'LDI R0,$DATA', 'LDI R13,#1', 'LD R1,R0', 'ADD R0,R0,R13', 'LD R2,R0', 'ADD R3,R1,R2', '', 'DATA:', '15', '4']
+`define writeRam \
+memory[1] = 16'b1000000000000110; \
+memory[2] = 16'b0000000111010110; \
+memory[3] = 16'b0000000000011001; \
+memory[4] = 16'b1101000000000000; \
+memory[5] = 16'b0000000000101001; \
+memory[6] = 16'b0010000100110000; \
+memory[128] = 15; \
+memory[129] = 4; \
