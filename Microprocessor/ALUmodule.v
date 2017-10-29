@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module ALUmodule(opcode, in1, in2, out);
+module ALUmodule(opcode, in1, in2, out, flags);
 	
 	`include "parameters.v"
 
@@ -27,16 +27,44 @@ module ALUmodule(opcode, in1, in2, out);
 	input [aluwidth-1:0] in1;
 	input [aluwidth-1:0] in2;
 	output [aluwidth-1:0] out;
-	//output reg flag;
+	
+	// flags = {C V Z N}
+	output [numflags-1:0] flags;
+
 	
 	assign out = 
 	(opcode == `ADD)*(in1 + in2) |
 	(opcode == `SUB)*(in1 - in2) |
 	(opcode == `AND)*(in1 & in2) |
 	(opcode == `OR)*(in1 | in2) |
-	(opcode == `LS)*(in1<<in2) |
-	(opcode == `RS)*(in1>>in2);
+	(opcode == `LS)*(in1 << in2) |
+	(opcode == `RS)*(in1 >> in2);
+
 	
+	reg [numflags-1:0] fl = 0;
+	reg [aluwidth-1:0] temp = 0;
+
+	assign flags = fl;
+
+	always @* begin
+
+		fl[0] = out[aluwidth-1];
+		fl[1] = (out == 0);
+		if(in1[aluwidth-1]==in2[aluwidth-1]) 
+			fl[2] = (in1[aluwidth-1]!=out[aluwidth-1]);
+		else
+			fl[2] = 0;
+		
+		if(opcode==`ADD) 
+			{fl[3],temp} = in1+in2;
+		else if(opcode == `SUB)
+			{fl[3],temp} = in1-in2;
+		else
+			fl[3]=  0;
+
+	end
+
+
 	/*always @* begin
 		if(opcode==`ADD) begin
 			out = in1+in2;

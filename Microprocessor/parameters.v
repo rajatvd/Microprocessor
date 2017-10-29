@@ -17,6 +17,8 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
+
+// OPCODES
 `define ADD 0
 `define SUB 1
 `define AND 2
@@ -28,13 +30,20 @@
 `define MOV 8
 `define LD 9
 `define ST 10
+`define CMP 11
+`define BCI 12
+`define BEI 13
+`define BI 14
 
 
+
+// CU STATES
 `define FETCH 0
 `define DECODE 1
 `define EXECUTE 2
 
 
+// BUS SIZES
 parameter adlines = 8;
 parameter datalines = 16;
 parameter ramsize = 1 << adlines;
@@ -44,3 +53,5 @@ parameter statesize = 4;
 parameter intRegAddr = 4;
 parameter numRegs = 1 << intRegAddr;
 
+// FLAGS : C V N Z
+parameter numflags = 4;

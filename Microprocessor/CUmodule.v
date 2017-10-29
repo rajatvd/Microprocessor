@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, read, write, clk, enable);
+module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, flags, read, write, clk, enable);
 	
 	`include "parameters.v"
 	
@@ -33,6 +33,7 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 	input [datalines-1:0] fromram;
 	output [datalines-1:0] toram;
 	
+	input [numflags-1:0] flags;
 	
 	input clk;
 	reg [datalines-1:0] pc=0, instreg=0, ramwrite_reg=0;

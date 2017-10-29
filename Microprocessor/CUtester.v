@@ -33,7 +33,7 @@ module CUTester;
 	// Outputs
 	wire [opsize-1:0] aluopcode;
 	wire [aluwidth-1:0] aluin1, aluin2, aluout;
-	wire [aluwidth-1:0] in1, in2, out;
+	wire [numflags-1:0] flags;
 	wire [adlines-1:0] addressbus;
 	wire read;
 	wire write;
@@ -51,7 +51,8 @@ module CUTester;
 		.toram(toram), 
 		.addressbus(addressbus), 
 		.read(read), 
-		.write(write), 
+		.write(write),
+		.flags(flags),
 		.clk(clk),
 		.enable(enable)
 	);
@@ -68,7 +69,8 @@ module CUTester;
 		.opcode(aluopcode), 
 		.in1(aluin1), 
 		.in2(aluin2), 
-		.out(aluout)
+		.out(aluout),
+		.flags(flags)
 	);
 
 	always begin

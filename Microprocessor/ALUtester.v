@@ -31,13 +31,15 @@ module ALUtester;
 
 	// Outputs
 	wire [aluwidth-1:0] out;
+	wire [numflags-1:0] flags;
 
 	// Instantiate the Unit Under Test (UUT)
 	ALUmodule uut (
 		.opcode(opcode), 
 		.in1(in1), 
 		.in2(in2), 
-		.out(out)
+		.out(out),
+		.flags(flags)
 	);
 
 	initial begin			
@@ -53,8 +55,8 @@ module ALUtester;
 		#100;
         
 		opcode = `ADD;
-		in1 = 5;
-		in2 = 2;
+		in1 = 1<<15;
+		in2 = 1<<15;
 		
 		#100
 		
