@@ -72,16 +72,27 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 				read = 0;
 				write = 0;
 				case(instreg[opsize-1:0])
-					`LOAD:
+					`LDI:
 					begin
-						addressbus = instreg[opsize+adlines-1:opsize];
+						r[instreg[opsize+intRegAddr-1:opsize]] = instreg[datalines-1:opsize+intRegAddr];
+					end
+					`STI: 
+					begin
+						addressbus = r[instreg[opsize+intRegAddr-1:opsize]];
+						ramwrite_reg = instreg[datalines-1:opsize+intRegAddr];
+						read = 0;
+						write = 1;
+					end
+					`LD:
+					begin
+						addressbus = r[instreg[opsize+intRegAddr-1:opsize]];
 						read = 1;
 						write = 0;
 					end
-					`STORE: 
+					`ST: 
 					begin
-						addressbus = instreg[opsize+adlines-1:opsize];
-						ramwrite_reg = r[instreg[opsize+adlines+intRegAddr-1:opsize+adlines]];
+						addressbus = r[instreg[opsize+intRegAddr-1:opsize]];
+						ramwrite_reg = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];
 						read = 0;
 						write = 1;
 					end
@@ -91,9 +102,9 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 					end
 					default:
 					begin
-						aluin1 = r[0];
-						aluin2 = r[1];
 						aluopcode = instreg[opsize-1:0];
+						aluin1 = r[instreg[opsize+intRegAddr-1:opsize]];
+						aluin2 = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];
 					end
 				endcase
 			STATE = `EXECUTE;
@@ -102,24 +113,31 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 			begin
 					
 				case(instreg[opsize-1:0])
-					`LOAD:
+					`LDI:
 					begin
-						r[instreg[opsize+adlines+intRegAddr-1:opsize+adlines]] = fromram;
 					end
-					`STORE: 
+					`LD:
 					begin
-						/*addressbus = instreg[opsize+adlines-1:opsize];
-						ramwrite_reg = r[instreg[opsize+adlines+2:opsize+adlines]];
-						read = 0;
-						write = 1;*/
+						r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]] = fromram;
 					end
+					
+					`STI: begin
+
+					end
+					`ST: begin
+
+					end
+					`MOV: begin
+
+					end
+
 					default:
 					begin
 						/*aluin1 = r[0];
 						aluin2 = r[1];
 						r[2] = aluout;
 						aluopcode = instreg[opsize-1:0];*/
-						r[2] = aluout;
+						r[instreg[opsize+intRegAddr+intRegAddr+intRegAddr-1:opsize+intRegAddr+intRegAddr]] = aluout;
 					end
 				endcase
 				STATE = `FETCH;

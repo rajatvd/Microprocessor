@@ -23,9 +23,11 @@
 `define OR 3
 `define LS 4
 `define RS 5
-`define LOAD 6
-`define STORE 7
+`define LDI 6
+`define STI 7
 `define MOV 8
+`define LD 9
+`define ST 10
 
 
 `define FETCH 0

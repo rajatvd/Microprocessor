@@ -1,0 +1,1 @@
+['PROGRAM:', 'LDI R0,$DATA', 'LDI R13,#1', 'LD R1,R0', 'ADD R0,R0,R13', 'LD R2,R0', 'ADD R3,R1,R2', '', 'DATA:', '15', '4']
