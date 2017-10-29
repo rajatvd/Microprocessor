@@ -4,7 +4,10 @@ LDI R13,#1
 LD R1,R0
 Addstmt : ADD R0  ,R0,R13
 LD R2,R0
-ADD R3,R1,R2
+
+loop: ADD R5,R5,R1
+SUB R2,R2,R13
+BNEI $loop
 
 DATA:
 15

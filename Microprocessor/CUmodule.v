@@ -34,9 +34,11 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 	output [datalines-1:0] toram;
 	
 	input [numflags-1:0] flags;
+	reg [numflags-1:0] fls=0;
 	
 	input clk;
-	reg [datalines-1:0] pc=0, instreg=0, ramwrite_reg=0;
+	reg [adlines-1:0] pc=0;
+	reg [datalines-1:0] instreg=0, ramwrite_reg=0;
 	reg [datalines-1:0] r [numRegs-1:0];
 	
 	assign toram = ramwrite_reg;
@@ -119,6 +121,19 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 					begin
 						r[instreg[opsize+intRegAddr-1:opsize]] = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];	
 					end
+
+					`BI: begin
+						pc = instreg[opsize+adlines-1:opsize]-1;
+					end
+					`BCI: begin
+						if(fls[3]==1)
+							pc = instreg[opsize+adlines-1:opsize]-1;
+					end
+					`BNEI: begin
+						if(fls[1]!=1)
+							pc = instreg[opsize+adlines-1:opsize]-1;
+					end
+
 					default:
 					begin
 						aluopcode = instreg[opsize-1:0];
@@ -149,6 +164,16 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 					`MOV: begin
 
 					end
+					`BI: begin
+
+					end
+					`BCI: begin
+
+					end
+					`BNEI: begin
+
+					end
+
 
 					default:
 					begin
@@ -157,6 +182,7 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 						r[2] = aluout;
 						aluopcode = instreg[opsize-1:0];*/
 						r[instreg[opsize+intRegAddr-1:opsize]] = aluout;
+						fls = flags;
 					end
 				endcase
 				STATE = `FETCH;

@@ -16,6 +16,10 @@ OPCODE = {
     "MOV":8,
     "LD":9,
     "ST":10,
+    "CMP":11,
+    "BCI":12,
+    "BNEI":13,
+    "BI":14,
 }
 
 def removeEmptyLines(lines):

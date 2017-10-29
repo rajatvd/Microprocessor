@@ -34,7 +34,7 @@ module ALUmodule(opcode, in1, in2, out, flags);
 	
 	assign out = 
 	(opcode == `ADD)*(in1 + in2) |
-	(opcode == `SUB)*(in1 - in2) |
+	(opcode == `SUB || opcode == `CMP)*(in1 - in2) |
 	(opcode == `AND)*(in1 & in2) |
 	(opcode == `OR)*(in1 | in2) |
 	(opcode == `LS)*(in1 << in2) |

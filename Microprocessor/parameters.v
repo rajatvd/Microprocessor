@@ -32,7 +32,7 @@
 `define ST 10
 `define CMP 11
 `define BCI 12
-`define BEI 13
+`define BNEI 13
 `define BI 14
 
 
