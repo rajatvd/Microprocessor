@@ -53,6 +53,24 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, r
 	
 
 
+	wire [datalines-1:0]	r0 = r[0],
+	r1 = r[1],
+	r2 = r[2],
+	r3 = r[3],
+	r4 = r[4],
+	r5 = r[5],
+	r6 = r[6],
+	r7 = r[7],
+	r8 = r[8],
+	r9 = r[9],
+	r10 = r[10],
+	r11 = r[11],
+	r12 = r[12],
+	r13 = r[13],
+	r14 = r[14],
+	r15 = r[15];
+
+
 	always @(posedge clk)
 	begin
 		if(enable == 1)
