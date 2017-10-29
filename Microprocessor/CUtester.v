@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer:
+// Author: Rajat Vadiraj Dwaraknath EE16B033 
 //
 // Create Date:   14:55:22 10/17/2017
 // Design Name:   CUmodule

@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer:
+// Author: Rajat Vadiraj Dwaraknath EE16B033 
 //
 // Create Date:   16:11:19 10/10/201aluwidth-1
 // Design Name:   ALUmodule

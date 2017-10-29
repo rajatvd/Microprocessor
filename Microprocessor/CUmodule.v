@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Author: Rajat Vadiraj Dwaraknath EE16B033 
 // 
 // Create Date:    13:57:54 10/17/2017 
 // Design Name: 

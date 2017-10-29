@@ -1,4 +1,5 @@
-#Assemble
+# Python assembler for microprocessor made in EE2016 (Jul-Nov 2017)
+# Author: Rajat Vadiraj Dwaraknath EE16B033
 import re
 DATA_LOC = 128
 MEMORY_VAR = "memory"

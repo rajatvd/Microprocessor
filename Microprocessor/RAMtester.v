@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer:
+// Author: Rajat Vadiraj Dwaraknath EE16B033 
 //
 // Create Date:   14:38:07 10/10/2017
 // Design Name:   RAMblock

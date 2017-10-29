@@ -1,3 +1,12 @@
+# Author: Rajat Vadiraj Dwaraknath EE16B033
+# Dated: 29 Oct 2017
+
+cu: CUtester.v ALUmodule.v CUmodule.v RAMblock.v
+	iverilog $? -o $@.out
+	vvp $@.out
+	gtkwave $@.vcd
+
+
 alu.out: ALUtester.v ALUmodule.v
 	iverilog $? -o $@
 
@@ -15,10 +24,6 @@ alu: ALUtester.v ALUmodule.v
 	vvp $@.out
 	gtkwave $@.vcd
 
-cu: CUtester.v ALUmodule.v CUmodule.v RAMblock.v
-	iverilog $? -o $@.out
-	vvp $@.out
-	gtkwave $@.vcd
 
 ram: RAMtester.v RAMblock.v
 	iverilog $? -o $@.out
