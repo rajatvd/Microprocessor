@@ -1,20 +1,18 @@
-program:
-LDI R0,$data
-LDI R1, #1
-LD r5,r0
-add r0,r0,r1
-LD r6,r0
-add r3,r5,r6
-sub r4,r5,r6
-and r7,r5,r6
+PROgRAM:
+LDI R0,$DATA
+LDI R13,#1
+LD R1,R0
+Addstmt : ADD R0  ,R0,R13
+LD R2,R0
 
-add r0,r0,r1
-st r3,r0
-add r0,r0,r1
-st r4,r0
-add r0,r0,r1
-st r7,r0
+loop: ADD R5,R5,R1
+SUB R2,R2,R13
+BNEI $loop
 
-data:
-5
-12
+ADD r0,r0,r13
+ST r5,r0
+LD r10,r0
+
+DATA:
+15
+8
