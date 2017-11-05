@@ -34,6 +34,7 @@
 `define BCI 12
 `define BNEI 13
 `define BI 14
+`define HALT 15
 
 
 
@@ -41,6 +42,7 @@
 `define FETCH 0
 `define DECODE 1
 `define EXECUTE 2
+`define IDLE 3
 
 
 // BUS SIZES

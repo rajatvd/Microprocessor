@@ -133,6 +133,9 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 						if(fls[1]!=1)
 							pc = instreg[opsize+adlines-1:opsize]-1;
 					end
+					`HALT: begin
+						STATE = `IDLE;
+					end
 
 					default:
 					begin
@@ -141,7 +144,8 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 						aluin2 = r[instreg[opsize+intRegAddr+intRegAddr+intRegAddr-1:opsize+intRegAddr+intRegAddr]];
 					end
 				endcase
-			STATE = `EXECUTE;
+			if(STATE != `IDLE)
+				STATE = `EXECUTE;
 			end
 			`EXECUTE:
 			begin

@@ -8,6 +8,7 @@ LD R2,R0
 loop: ADD R5,R5,R1
 SUB R2,R2,R13
 BNEI $loop
+HALT
 
 DATA:
 15
