@@ -130,7 +130,7 @@ module CUTester;
 	*/	
 		enable = 1;
 		
-		#50000
+		#5000000
 		$finish;
 
 	end
