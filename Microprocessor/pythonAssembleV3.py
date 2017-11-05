@@ -90,8 +90,11 @@ def compileLine(line,labels):
     return s
     
 
+def removeCommentLines(lines):
+    """Removes lines starting with // """
+    return [l for l in lines if l.strip()[0:2] != "//"]
+
 # TODO check validity of PROGRAM and DATA labels, etc.
-# TODO add comment line functionality in the assembly code.
 def compileIntoM(text):
     """ Compiles an assembly language program into a macro which can be called in verilog code."""
     
@@ -99,6 +102,7 @@ def compileIntoM(text):
     lines = text.split("\n")
     lines = [l.strip().upper() for l in lines]
     lines = removeEmptyLines(lines)
+    lines = removeCommentLines(lines)
     
     # Get labels
     labels = getLabels(lines)
