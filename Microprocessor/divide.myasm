@@ -1,0 +1,23 @@
+program:
+
+LDI R0,$DATA
+LDI R13, #1
+LDI R3, #0
+
+LD R1,R0
+ADD R0,R0,R13
+LD R2,R0
+
+divide: CMP R1,R2
+BCI $done
+SUB R1,R1,R2
+ADD R3,R3,R13
+BI $DIVIDE
+DONE: LDI R5, #7
+
+
+HALT
+
+data:
+15
+6

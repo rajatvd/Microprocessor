@@ -143,6 +143,15 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 						r[instreg[opsize+intRegAddr-1:opsize]] = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];	
 					end
 
+					`CMP: begin
+						// CMP Rx, Ry
+						// Sets flags after doing Rx-Ry
+
+						aluopcode = instreg[opsize-1:0];
+						aluin1 = r[instreg[opsize+intRegAddr-1:opsize]];
+						aluin2 = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];
+					end
+
 					`BI: begin
 						// BI $label
 						// Branch immediate. Sets the program counter to the literal value given in the instruction, minus 1.
@@ -207,6 +216,11 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 					`MOV: begin
 
 					end
+					`CMP: begin
+						// Update flags after comparing
+						fls = flags;
+					end
+
 					`BI: begin
 
 					end

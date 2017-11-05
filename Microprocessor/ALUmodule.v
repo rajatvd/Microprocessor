@@ -63,7 +63,7 @@ module ALUmodule(opcode, in1, in2, out, flags);
 		// Carry flag
 		if(opcode==`ADD) 
 			{fl[3],temp} = in1+in2;
-		else if(opcode == `SUB)
+		else if(opcode == `SUB || opcode == `CMP)
 			{fl[3],temp} = in1-in2;
 		else
 			fl[3]=  0;
