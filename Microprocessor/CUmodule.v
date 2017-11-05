@@ -45,6 +45,7 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 
 	integer i;
 
+	// Initialize internal registers.
 	initial
 	begin
 		for(i=0;i<numRegs;i=i+1) begin
@@ -56,6 +57,7 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 	
 
 
+	// Wires to allow registers to be dumped into dumpfile
 	wire [datalines-1:0]	r0 = r[0],
 	r1 = r[1],
 	r2 = r[2],
@@ -76,11 +78,13 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 
 	always @(posedge clk)
 	begin
+		// Main CPU cycle
 		if(enable == 1)
 		begin
 		case(STATE)
 			`FETCH:
 			begin
+				// Get isntruction from memory
 				pc = pc+1;
 				addressbus = pc;
 				read = 1;
@@ -89,16 +93,23 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 			end
 			`DECODE:
 			begin
+				// Load instruction into instruction register
 				instreg = fromram;
 				read = 0;
 				write = 0;
+
+				// Decode based on opcode
 				case(instreg[opsize-1:0])
 					`LDI:
 					begin
+						// LDI Rx, #y
+						// Loads the literal value y into register Rx.
 						r[instreg[opsize+intRegAddr-1:opsize]] = instreg[datalines-1:opsize+intRegAddr];
 					end
 					`STI: 
 					begin
+						// STI Rx, #y
+						// Stores the literal value y, into the RAM at address given by the value of register Rx.
 						addressbus = r[instreg[opsize+intRegAddr-1:opsize]][adlines-1:0];
 						ramwrite_reg = instreg[datalines-1:opsize+intRegAddr];
 						read = 0;
@@ -106,12 +117,19 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 					end
 					`LD:
 					begin
+						// LD Rx, Ry
+						// Loads the value in RAM at address Ry, into the register Rx.
+
+						// Asserts ram signals in this state and loads in next state.
 						addressbus = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]][adlines-1:0];
 						read = 1;
 						write = 0;
 					end
 					`ST: 
 					begin
+						// ST Rx, Ry
+						// Stores the value of register Rx into RAM at address Ry.
+
 						addressbus = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]][adlines-1:0];
 						ramwrite_reg = r[instreg[opsize+intRegAddr-1:opsize]];
 						read = 0;
@@ -119,26 +137,46 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 					end
 					`MOV:
 					begin
+						// MOV Rx, Ry
+						// Rx = Ry
+
 						r[instreg[opsize+intRegAddr-1:opsize]] = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];	
 					end
 
 					`BI: begin
+						// BI $label
+						// Branch immediate. Sets the program counter to the literal value given in the instruction, minus 1.
+						// Literal values usually given as label references.
+
 						pc = instreg[opsize+adlines-1:opsize]-1;
 					end
 					`BCI: begin
+						// BCI $label
+						// Branch if carry set.
+
 						if(fls[3]==1)
 							pc = instreg[opsize+adlines-1:opsize]-1;
 					end
 					`BNEI: begin
+						// BNEI $label
+						// Branch if not equal. (Zero flag is not set)
+
 						if(fls[1]!=1)
 							pc = instreg[opsize+adlines-1:opsize]-1;
 					end
 					`HALT: begin
+						// HALT
+						// Halts the processor
 						STATE = `IDLE;
 					end
 
 					default:
 					begin
+						// All other opcodes are ALU operations. They are of the format:
+						// OP Rd, Rx, Ry
+						// Rd = OP(Rx,Ry)
+
+						// Asserts alu signals in this state and stores output in next state.
 						aluopcode = instreg[opsize-1:0];
 						aluin1 = r[instreg[opsize+intRegAddr+intRegAddr-1:opsize+intRegAddr]];
 						aluin2 = r[instreg[opsize+intRegAddr+intRegAddr+intRegAddr-1:opsize+intRegAddr+intRegAddr]];
@@ -156,6 +194,7 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 					end
 					`LD:
 					begin
+						// Load value read from ram into register
 						r[instreg[opsize+intRegAddr-1:opsize]] = fromram;
 					end
 					
@@ -181,10 +220,7 @@ module CUmodule(aluopcode, aluin1, aluin2, aluout, toram, fromram, addressbus, f
 
 					default:
 					begin
-						/*aluin1 = r[0];
-						aluin2 = r[1];
-						r[2] = aluout;
-						aluopcode = instreg[opsize-1:0];*/
+						// Load output of ALU operation into destination register, and update flags.
 						r[instreg[opsize+intRegAddr-1:opsize]] = aluout;
 						fls = flags;
 					end

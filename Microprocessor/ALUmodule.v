@@ -32,6 +32,7 @@ module ALUmodule(opcode, in1, in2, out, flags);
 	output [numflags-1:0] flags;
 
 	
+	// Combinational logic for finding output
 	assign out = 
 	(opcode == `ADD)*(in1 + in2) |
 	(opcode == `SUB || opcode == `CMP)*(in1 - in2) |
@@ -46,15 +47,20 @@ module ALUmodule(opcode, in1, in2, out, flags);
 
 	assign flags = fl;
 
+	// Find flag values
 	always @* begin
 
-		fl[0] = out[aluwidth-1];
-		fl[1] = (out == 0);
+		fl[0] = out[aluwidth-1]; // Negative flag
+
+		fl[1] = (out == 0); // Zero flag
+
+		// Overflow flag
 		if(in1[aluwidth-1]==in2[aluwidth-1]) 
 			fl[2] = (in1[aluwidth-1]!=out[aluwidth-1]);
 		else
 			fl[2] = 0;
 		
+		// Carry flag
 		if(opcode==`ADD) 
 			{fl[3],temp} = in1+in2;
 		else if(opcode == `SUB)

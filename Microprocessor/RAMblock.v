@@ -32,37 +32,31 @@ module RAMblock(address,datain,dataout,read,write);
 	reg [datalines-1:0] memory [ramsize-1:0];
 	reg [datalines-1:0] temp;
 
-	integer i;
-
 	initial begin
 		temp = 0;
-		
-		/*memory[1] = 16'b100000110;
-		memory[2] = 16'b11000100010110;
-		memory[3] = 16'b001100011000;
-		memory[4] = 0;
-		memory[5] = 16'b10101010100111;
-		memory[16] = 15;
-		memory[17] = 4;*/
 
-		/*for(i=0;i<7;i=i+1) begin
-			memory[ADDRESSES[i]] = DATA[i];
-		end*/
+		// Call the writeRam macro defined in "code.v".
+		// The python assembler creates the "code.v" file with this macro in it, after
+		// compiling assembly mnemonics into instruction code. Calling this simply 
+		// initialises the memory.
 		`writeRam
 
 	end
 	
+	// Connect output wire to temp register only if read is asserted
 	assign dataout = read ? temp : 0;
 	
 	always @*
 	begin
 		if(write == 1)
 		begin
+			// Write from datain to memory
 			memory[address] = datain;
 		end
 		
 		if(read == 1)
 		begin
+			// Load from memory into temp register, which in turn connects to dataout wire
 			temp = memory[address];
 		end
 	end
