@@ -1,7 +1,7 @@
 # Author: Rajat Vadiraj Dwaraknath EE16B033
 # Dated: 29 Oct 2017
 
-cu: CUtester.v ALUmodule.v CUmodule.v RAMblock.v
+cu: CPU.v ALUmodule.v CUmodule.v RAMblock.v
 	iverilog $? -o $@.out
 	vvp $@.out
 	gtkwave $@.vcd
@@ -10,7 +10,7 @@ cu: CUtester.v ALUmodule.v CUmodule.v RAMblock.v
 alu.out: ALUtester.v ALUmodule.v
 	iverilog $? -o $@
 
-cu.out: CUtester.v ALUmodule.v CUmodule.v RAMblock.v
+cu.out: CPU.v ALUmodule.v CUmodule.v RAMblock.v
 	iverilog $? -o $@
 
 ram.out: RAMtester.v RAMblock.v
@@ -29,6 +29,14 @@ ram: RAMtester.v RAMblock.v
 	iverilog $? -o $@.out
 	vvp $@.out
 	gtkwave $@.vcd
+
+factorial: factorial.myasm
+	python pythonAssembleV3.py factorial.myasm
+	make
+
+pi: findpi2.myasm
+	python pythonAssembleV3.py findpi2.myasm
+	make
 
 .PHONY: clean, all
 

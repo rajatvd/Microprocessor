@@ -1,0 +1,24 @@
+program:
+LDI R0, $data
+LDI R13, #1
+LDI R14, #2
+MOV R5,R13
+
+LD R1,R0
+
+// check for 0! and 1!
+CMP R1,R14
+BCI $end
+SUB R1,R1,R13
+
+loop:MOV R3,R5
+MOV R2,R1
+mul: ADD R5,R5,R3
+SUB R2,R2,R13
+BNEI $mul
+SUB R1,R1,R13
+BNEI $loop
+
+end: HALT
+data:
+5
